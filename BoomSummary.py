@@ -8,30 +8,32 @@ class Word:
     self.type = self.defineType()
     self.count = count
   def isNoun(self):
-      if(self.type == "Noun"):
-          return True
-      else:
-          return False
+      for x in self.type:
+          if(x == 'Noun'):
+              return True
+      return False
   def defineType(self):
-      full = dict.meaning(self)
-      keyList = list()
-      for (key,value) in full.items():
-          keyList.append(key)
-      if len(keyList) > 1:
-          for POS in keyList:
-              if POS == "Noun":
-                  return "Noun"
-      return keyList[0]
+      full = dict.meaning(self.word)
+      x = list(full)
+      return x
 
 
 #Constants
 punctuation = (',','.','/',';',':')
 
-
-words = []
-paragraph = input("Enter the text to be summarized: ")
-tokens = paragraph.split()
-
+def removePunctuation(word, punctuation):
+    for x in punctuation:
+        if(word[len(word)-1] == x):
+            word = word[0:len(word)-1]
+    return word
+def max(words):
+    top = 0
+    output = ""
+    for x in words:
+        if(x.count > top):
+            top = x.count
+            output = x
+    return output
 def position(words, word):
     i = 0
     output = 0
@@ -44,23 +46,19 @@ def position(words, word):
     if(found == False):
         output = -1
     return output
+words = []
+paragraph = input("Enter the text to be summarized: ")
+tokens = paragraph.split()
 
 for x in tokens:
-    x = format(x,punctuation)
+    x = x.strip()
+    x = removePunctuation(x, punctuation)
+    x = st.stem(x)
     if(position(words, x) > -1):
         words[position(words,x)].count += 1
     else:
         words.append(Word(x,1))
+output = max(words)
+print(output.word)
 
-def format(word,punctuation):
-    word.strip()
-    word = removePunctuation(word, punctuation)
-    word = st.stem(word)
-    return word
-
-def removePunctuation(word, punctuation):
-    for x in punctuation:
-        if(word[len(word)-1] == x):
-            word = word[0:len(word)-1]
-    return word
 
