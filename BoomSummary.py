@@ -13,8 +13,13 @@ class Word:
               return True
       return False
   def defineType(self):
-      full = dict.meaning(self.word)
-      x = list(full)
+      x = list()
+      try:
+
+        if(dict.meaning(self.word) != None):
+            x = list(dict.meaning(self.word))
+      except:
+         pass
       return x
 
 
@@ -53,7 +58,7 @@ tokens = paragraph.split()
 for x in tokens:
     x = x.strip()
     x = removePunctuation(x, punctuation)
-    x = st.stem(x)
+    #x = st.stem(x)
     if(position(words, x) > -1):
         words[position(words,x)].count += 1
     else:
