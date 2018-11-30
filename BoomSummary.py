@@ -1,4 +1,6 @@
 from PyDictionary import PyDictionary as dict
+from nltk.stem.lancaster import LancasterStemmer
+st = LancasterStemmer()
 
 class Word:
   def __init__(self, word, count):
@@ -53,16 +55,12 @@ for x in tokens:
 def format(word,punctuation):
     word.strip()
     word = removePunctuation(word, punctuation)
-    word = removePlural(word)
+    word = st.stem(word)
     return word
 
 def removePunctuation(word, punctuation):
     for x in punctuation:
         if(word[len(word)-1] == x):
             word = word[0:len(word)-1]
-    return word
-
-def removePlural(word):
-
     return word
 
