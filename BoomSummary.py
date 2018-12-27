@@ -47,12 +47,7 @@ for item in tokens:
     item = item.strip()
     item = removePunctuation(item, punctuation)
     #x = st.stem(x)
-    #checks if the item is already in the Word_List.
-    if(Word_List.contains(item)):
-        Word_List.increment(item)
-    #Checks if the word is in the database
-    elif(not useless(cur, item)):
-        Word_List.add(Word(item, None, 1))
+    Word_List.add(Word(item, None, 1))
 #output stores the Word Object with the highest count
 output = Word_List.max()
 print(output.word)
