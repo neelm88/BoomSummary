@@ -1,4 +1,5 @@
 from Word import Word
+#WordSet is an Object that stores Word Objects.
 class WordSet:
     def __init__(self):
         self.elements = []
@@ -28,6 +29,14 @@ class WordSet:
                 output = x
                 found = True
         return output
+#Increases the count of a Word Object in elements that has the word value of str.    
+#   str: The string that is being searched for in self.
+#   elements: The list of Word Objects from which one is being incremented.
+    def increment(elements,str):
+        WordSet.moveToFront(elements, WordSet.showWord(elements,str))
+        temp = elements.pop(0)
+        temp.count += 1
+        elements.append(temp)
 
 #    
 #Instance Methods   
@@ -36,7 +45,10 @@ class WordSet:
 #Adds the Word Object to self. 
 #   word: A Word Object being added to self.
     def add(self, word):
-        self.elements.append(word)
+        if(self.contains(word.word)):
+            WordSet.increment(self.elements,word.word)
+        else:
+            self.elements.append(word)
         
 #Removes and returns the Word Object from self.        
 #   word: A Word Object being removed from self.        
@@ -70,10 +82,4 @@ class WordSet:
                 top = x.count
                 output = x
         return output
-#Increases the count of a Word Object in self that has the word value of str.    
-#   str: The string that is being searched for in self. 
-    def increment(self,str):
-        WordSet.moveToFront(self.elements, WordSet.showWord(self.elements,str))
-        temp = self.elements.pop(0)
-        temp.count += 1
-        self.elements.append(temp)
+
