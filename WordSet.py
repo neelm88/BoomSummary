@@ -21,19 +21,19 @@ class WordSet:
 #Returns, but does not remove the Word Object from elements that is the string str.
 #   elements: The list of Word Objects being searched.
 #   str: The string that is contained in one of the Word Objects in elements.
-    def showWord(elements, str):
+    def showWord(elements, word):
         found = False
         output = Word(None,None,None)
         for x in elements:
-            if(x.word == str and not found):
+            if(x.word == word.word and not found):
                 output = x
                 found = True
         return output
 #Increases the count of a Word Object in elements that has the word value of str.    
-#   str: The string that is being searched for in self.
+#   word: The Word Object that is being searched for in self.
 #   elements: The list of Word Objects from which one is being incremented.
-    def increment(elements,str):
-        WordSet.moveToFront(elements, WordSet.showWord(elements,str))
+    def increment(elements,word):
+        WordSet.moveToFront(elements, word)
         temp = elements.pop(0)
         temp.count += 1
         elements.append(temp)
@@ -45,8 +45,8 @@ class WordSet:
 #Adds the Word Object to self. 
 #   word: A Word Object being added to self.
     def add(self, word):
-        if(self.contains(word.word)):
-            WordSet.increment(self.elements,word.word)
+        if(self.contains(word)):
+            WordSet.increment(self.elements,word)
         else:
             self.elements.append(word)
         
@@ -56,12 +56,12 @@ class WordSet:
         WordSet.moveToFront(self.elements, word)
         return self.pop(0)
     
-#Returns true if there is a word with the string str in self, false otherwise.
-#   str: The string that is being searched for in self.
-    def contains(self, str):
+#Returns true if the Word Object word is in self, false otherwise.
+#   word: The Word Object that is being searched for in self.
+    def contains(self, word):
         found = False
         for x in self.elements:
-            if (x.word == str and not found):
+            if (x.word == word.word and not found):
                 found = True
         return found
     
