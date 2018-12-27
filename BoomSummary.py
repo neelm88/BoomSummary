@@ -31,13 +31,7 @@ def removePunctuation(word, punctuation):
         if(word[len(word)-1] == x):
             word = word[0:len(word)-1]
     return word
-#Returns the Word Objecf from Word_List that has the highest count.
-#   Word_List: The list which stores Word Objects.
-#def max(Word_List):
 
-#Returns the position of word in Word_List, returns -1 if word is not found.
-#   Word_List: The list which stores Word Objects.
-#   word: The string that is being located in Word_List
 #Main
 
 #st = LancasterStemmer()
