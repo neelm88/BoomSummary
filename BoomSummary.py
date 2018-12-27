@@ -1,69 +1,66 @@
 from PyDictionary import PyDictionary as dict
 from nltk.stem.lancaster import LancasterStemmer
-st = LancasterStemmer()
-
-class Word:
-  def __init__(self, word, count):
-    self.word = word
-    self.type = self.defineType()
-    self.count = count
-  def isNoun(self):
-      for x in self.type:
-          if(x == 'Noun'):
-              return True
-      return False
-  def defineType(self):
-      x = list()
-      try:
-
-        if(dict.meaning(self.word) != None):
-            x = list(dict.meaning(self.word))
-      except:
-         pass
-      return x
-
+import sqlite3 as sql
+from Word import Word
+from WordSet import WordSet
 
 #Constants
-punctuation = (',','.','/',';',':')
 
+#A tuple of chars of punctuation symbols
+punctuation = (',','.','/',';',':','—')
+
+#Methods
+
+#Checks if the parameter word is in the database: UselessWords.db.
+#Returns true if the word is useless, false otherwise.
+#   word: The word being checked. String.
+#   cur: The cursor used to access the database
+def useless(cur, word):
+    prompt = "SELECT words FROM UselessWords WHERE words = '" + word + "'"
+    cur.execute(prompt)
+    x = cur.fetchone()
+    if(x == None):
+        return False
+    else:
+        return True
+#If there is punctuation at the end of the word, it is removed and the word is returned.
+#   word: The string in which the word being modified is stored.
+#   punctuation: Tuple containing punctuation that is to be removed.
 def removePunctuation(word, punctuation):
     for x in punctuation:
         if(word[len(word)-1] == x):
             word = word[0:len(word)-1]
     return word
-def max(words):
-    top = 0
-    output = ""
-    for x in words:
-        if(x.count > top):
-            top = x.count
-            output = x
-    return output
-def position(words, word):
-    i = 0
-    output = 0
-    found = False
-    for x in words:
-        if(x.word == word):
-            found = True
-            output = i
-        i+=1
-    if(found == False):
-        output = -1
-    return output
-words = []
-paragraph = input("Enter the text to be summarized: ")
-tokens = paragraph.split()
+#Returns the Word Objecf from Word_List that has the highest count.
+#   Word_List: The list which stores Word Objects.
+#def max(Word_List):
 
-for x in tokens:
-    x = x.strip()
-    x = removePunctuation(x, punctuation)
+#Returns the position of word in Word_List, returns -1 if word is not found.
+#   Word_List: The list which stores Word Objects.
+#   word: The string that is being located in Word_List
+#Main
+
+#st = LancasterStemmer()
+con = sql.connect("UselessWords.db")
+cur = con.cursor()
+#Word_List stores words from the input parapgraph.
+Word_List = WordSet()
+paragraph = input("Enter the text to be summarized: ")
+#tokens: list of words in the input parargraph.
+tokens = paragraph.split()
+#Removes formatting from each word then adds it to Word_List.
+for item in tokens:
+    item = item.strip()
+    item = removePunctuation(item, punctuation)
     #x = st.stem(x)
-    if(position(words, x) > -1):
-        words[position(words,x)].count += 1
-    else:
-        words.append(Word(x,1))
-output = max(words)
+    #checks if the item is already in the Word_List.
+    if(Word_List.contains(item)):
+        Word_List.increment(item)
+    #Checks if the word is in the database
+    elif(not useless(cur, item)):
+        Word_List.add(Word(item, None, 1))
+output = Word_List.max()
 print(output.word)
+con.close()
 
 
