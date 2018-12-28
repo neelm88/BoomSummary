@@ -1,4 +1,5 @@
 from PyDictionary import PyDictionary as dict
+from nltk.corpus import wordnet as wn
 #The Word object represents one word and stores:
 #   word: the word itself as a string
 #   type: the part of speech as a list
@@ -13,15 +14,25 @@ class Word:
         self.word = word
         self.type = self.defineType()
         self.count = count
-  #Returns true if the word is a noun, and false otherwise.
+#Returns true if the word is a noun, and false otherwise.
   def isNoun(self):
-      for x in self.type:
-          if(x == 'Noun'):
-              return True
-      return False
-  #Returns a list of parts of speech associated with the word.
+      return self.type[0] == "noun"
+#Returns a list of parts of speech associated with the word.
   def defineType(self):
-    x = list()
-    if(dict.meaning(self.word) != None):
-        x = list(dict.meaning(self.word))
+    x = []
+    synsets = wn.synsets(self.word, wn.NOUN)
+    if(len(synsets) > 0):
+        x.append("noun")
+
+    synsets = wn.synsets(self.word, wn.ADJ)
+    if(len(synsets) > 0):
+        x.append("adjective")
+
+    synsets = wn.synsets(self.word, wn.VERB)
+    if(len(synsets) > 0):
+        x.append("verb")
+
+    synsets = wn.synsets(self.word, wn.ADV)
+    if(len(synsets) > 0):
+        x.append("adverb")
     return x

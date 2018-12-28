@@ -1,9 +1,7 @@
-from PyDictionary import PyDictionary as dict
 #from nltk.stem.lancaster import LancasterStemmer
 import sqlite3 as sql
 from Word import Word
 from WordSet import WordSet
-
 #Constants
 
 #A tuple of chars of punctuation symbols
