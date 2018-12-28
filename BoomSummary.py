@@ -1,5 +1,5 @@
 from PyDictionary import PyDictionary as dict
-from nltk.stem.lancaster import LancasterStemmer
+#from nltk.stem.lancaster import LancasterStemmer
 import sqlite3 as sql
 from Word import Word
 from WordSet import WordSet
@@ -47,7 +47,8 @@ for item in tokens:
     item = item.strip()
     item = removePunctuation(item, punctuation)
     #x = st.stem(x)
-    Word_List.add(Word(item, None, 1))
+    if(not useless(cur, item)):
+        Word_List.add(Word(item, None, 1))
 #output stores the Word Object with the highest count
 output = Word_List.max()
 print(output.word)

@@ -15,7 +15,7 @@ class WordSet:
         for x in elements:
             if(x.word == word.word and not found):
                 found = True
-                elements.remove(word)
+                elements.remove(x)
                 elements.insert(0,word)
                                
 #Returns, but does not remove the Word Object from elements that is the string str.
